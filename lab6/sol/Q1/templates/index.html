@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home Page</title>
+</head>
+<body>
+  {% if username %}
+    <h1>Welcome back, {{ username }}!</h1>
+    <p>Cookies are already set.</p>
+  {% else %}
+    <h1>Welcome new user!</h1>
+    <form method="POST">
+        <label for="netid">Enter your NetID:</label>
+        <input type="text" id="netid" name="netid" required>
+        <button type="submit">Submit</button>
+    </form>
+    <p>Cookies are being set...</p>
+  {% endif %}
+  <a href="/Q1B2/">Go to Q1B2 folder</a>
+</body>
+</html>

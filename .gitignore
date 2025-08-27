@@ -1,0 +1,33 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+*.pptx
+*.exe
+*.pdf
+**/*.pdf
+.vscode/
+**/.vscode/
+**/__pycache__/
+**/.venv/
+*.json
+*Zone.Identifier
+desktop.ini
+[0-9]x[0-9].png
+[0-9][0-9]x[0-9].png
+[0-9]x[0-9][0-9].png
+[0-9][0-9]x[0-9][0-9].png
+[0-9][0-9][0-9]x[0-9].png
+[0-9]x[0-9][0-9][0-9].png
+[0-9][0-9][0-9]x[0-9][0-9].png
+[0-9][0-9]x[0-9][0-9][0-9].png
+[0-9][0-9][0-9]x[0-9][0-9][0-9].png
+*.docx
+*.pyc
+!.gitignore
+*.zip

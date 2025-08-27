@@ -1,0 +1,129 @@
+from math import log2
+from enum import Enum
+
+INVERSION_BOUND = 10  # pre-defined constant; independent of list input sizes
+
+class MagicCase(Enum):
+    """Enumeration for tracking which case we want to use in magicsort"""
+    GENERAL = 0
+    SORTED = 1
+    CONSTANT_INVERSIONS = 2
+    REVERSE_SORTED = 3
+
+def linear_scan(L):
+    """Scans a list and determines which case applies."""
+    n = len(L)
+    n_inversions = 0
+    for i in range(n-1): 
+        if L[i] > L[i+1]: 
+            n_inversions += 1
+    
+    if n_inversions == 0:
+        return MagicCase.SORTED
+    elif n_inversions == n-1:
+        return MagicCase.REVERSE_SORTED
+    elif n_inversions <= INVERSION_BOUND:
+        return MagicCase.CONSTANT_INVERSIONS
+    else:
+        return MagicCase.GENERAL
+
+def reverse_list(L, alg_set=None):
+    """Reverses a given list."""
+    if alg_set is not None: alg_set.add(reverse_list.__name__)
+    
+    n = len(L)
+    for i in range(n//2):
+        L[i], L[n-i-1] = L[n-i-1], L[i]
+    
+
+def magic_insertionsort(L, left, right, alg_set=None):
+    """Sorts a list using insertionsort."""
+    if alg_set is not None: alg_set.add(magic_insertionsort.__name__)
+    
+    n = right-left
+    for i in range(n-1):
+        j = right-2-i
+        item = L[j]
+        while j < right-1 and item > L[j+1]:
+            L[j] = L[j+1]
+            j += 1
+        L[j] = item
+
+def magic_mergesort(L, left, right, alg_set=None):
+    """Sorts a list using mergesort, switching to insertionsort if the list has length<=20."""
+    if alg_set is not None: alg_set.add(magic_mergesort.__name__)
+        
+    n = right-left
+    mid = (right + left) // 2
+    
+    if n <= 20: # Base Case
+        magic_insertionsort(L, left, right, alg_set)
+        return L
+    
+    L_left = magic_mergesort(L[left:mid], 0, mid-left, alg_set)
+    L_right = magic_mergesort(L[mid:right], 0, right-mid, alg_set)
+    merge(L, L_left, L_right, left, right)
+    return L
+
+def merge(L, L_left, L_right, left, right):
+    """Merges two lists together into a larger reference list from left to right."""
+    i, j = 0,0
+    while i < len(L_left) and j < len(L_right):
+        if L_left[i] <= L_right[j]:
+            L[left+i+j] = L_left[i]
+            i += 1
+        else:
+            L[left+i+j] = L_right[j]
+            j += 1
+    L[left+i+j:right] = L_left[i:] + L_right[j:]
+    
+def magic_quicksort(L, left, right, depth=0, alg_set=None):
+    """Uses quicksort to sort a list of length L. Changes to insertion sort if n<=20 and mergesort if we get bad pivots."""
+    if alg_set is not None:
+        alg_set.add(magic_quicksort.__name__)
+        
+    max_depth = log2(len(L)) + 1 if len(L) > 0 else 0
+    
+    n = right-left
+    if n <= 20:
+        magic_insertionsort(L, left, right, alg_set)
+        return
+    if depth > 3 * max_depth:
+        magic_mergesort(L, left, right, alg_set)
+        return
+    pivot = partition(L, left, right)
+    magic_quicksort(L, left, pivot, depth+1, alg_set)
+    magic_quicksort(L, pivot+1, right, depth+1, alg_set)
+    
+
+def partition(L, left, right):
+    """Partitions L from [left:right] around a pivot."""
+    # define pivot as end of the list.
+    i, j, pivot = left, right-2, right-1
+    
+    while i < j:
+        while L[i] < L[pivot]: i += 1
+        while j > i and L[j] >= L[pivot]: j-= 1
+        
+        if i < j: L[i], L[j] = L[j], L[i]
+        
+    # 2 element sublist check
+    if L[i] >= L[pivot]:
+        L[i], L[pivot] = L[pivot], L[i]
+        pivot = i
+
+    return pivot
+    
+
+def magicsort(L):
+    """Sorts a list "optimally", calls quicksort which may switch to mergesort or insertionsort. Returns a set of names of the magic algorithms utilized to sort the list."""
+    case = linear_scan(L)
+    algs = set()
+    n = len(L)
+    if case == MagicCase.GENERAL:
+        magic_quicksort(L, 0, n, alg_set=algs)
+    elif case == MagicCase.REVERSE_SORTED:
+        reverse_list(L, alg_set=algs)
+    elif case == MagicCase.CONSTANT_INVERSIONS:
+        magic_insertionsort(L, 0, n, alg_set=algs)
+    return algs

